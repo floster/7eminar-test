@@ -47,7 +47,5 @@ const onSubmit = handleSubmit((values) => {
     <UFormGroup label="Date" :error="errors.event_date">
       <UIInputDate v-model="event_date" />
     </UFormGroup>
-
-    <UButton type="submit">Save</UButton>
   </form>
 </template>

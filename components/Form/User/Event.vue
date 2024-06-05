@@ -37,36 +37,40 @@ const onSubmit = handleSubmit((values) => {
 </script>
 
 <template>
-  <form class="space-y-4 bg-slate-500 py-3 px-2 rounded" @submit="onSubmit">
-    <div class="grid grid-cols-3 gap-x-2">
-      <UIInputTime
-        v-model="start_time"
-        label="Start"
-        :error="errors.start_time"
-      />
-      <UIInputTime v-model="end_time" label="End" :error="errors.end_time" />
+  <div class="flex flex-col">
+    <div class="flex items-center justify-between">
+      <h3>05-06-2024</h3>
+      <UIButtonClose />
+    </div>
+    <form class="space-y-4 bg-slate-500 py-3 px-2 rounded" @submit="onSubmit">
+      <div class="grid grid-cols-3 gap-x-2">
+        <UIInputTime
+          v-model="start_time"
+          label="Start"
+          :error="errors.start_time"
+        />
+        <UIInputTime v-model="end_time" label="End" :error="errors.end_time" />
+
+        <UFormGroup
+          label="Price"
+          :error="errors.price"
+          :ui="{ label: { base: 'text-gray-50' } }"
+        >
+          <UInput v-model="price" type="number" />
+        </UFormGroup>
+      </div>
 
       <UFormGroup
-        label="Price"
-        :error="errors.price"
+        label="Kind"
+        :error="errors.consultation_kind"
         :ui="{ label: { base: 'text-gray-50' } }"
       >
-        <UInput v-model="price" type="number" />
+        <USelect
+          v-model="consultation_kind"
+          :options="consultation_kinds"
+          placeholder="select kind of consultation"
+        />
       </UFormGroup>
-    </div>
-
-    <UFormGroup
-      label="Kind"
-      :error="errors.consultation_kind"
-      :ui="{ label: { base: 'text-gray-50' } }"
-    >
-      <USelect
-        v-model="consultation_kind"
-        :options="consultation_kinds"
-        placeholder="select kind of consultation"
-      />
-    </UFormGroup>
-
-    <!-- <UButton type="submit">Save</UButton> -->
-  </form>
+    </form>
+  </div>
 </template>
