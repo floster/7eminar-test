@@ -9,9 +9,9 @@
     }"
   >
     <template #header>
-      <UserHeader />
+      <UserCardHeader />
     </template>
 
-    <UserEvents />
+    <UserCardEvents />
   </UCard>
 </template>
