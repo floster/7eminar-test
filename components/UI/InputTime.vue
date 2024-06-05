@@ -10,7 +10,7 @@ defineProps<{
   <UFormGroup
     :label="label"
     :error="error"
-    :ui="{ label: { base: 'text-gray-50' } }"
+    :ui="{ label: { base: 'text-indigo-900' } }"
   >
     <UInput v-model="time" type="time" icon="i-heroicons-clock" trailing />
   </UFormGroup>

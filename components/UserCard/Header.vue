@@ -1,5 +1,9 @@
 <script setup lang="ts">
 import type { Employee } from "~/types";
+
+import { useSidebarStore } from "@/stores/sidebar";
+const sidebarStore = useSidebarStore();
+
 defineProps<{
   userData: Employee;
 }>();
@@ -8,7 +12,7 @@ defineProps<{
 <template>
   <header class="flex flex-col gap-y-1">
     <div class="flex items-center justify-between">
-      <h2 class="flex items-center gap-x-1 text-xl text-slate-900">
+      <h2 class="flex items-center gap-x-1 text-xl text-emerald-900">
         <span v-if="userData.name">{{ userData.name }}</span>
         <span v-if="userData.surname">{{ userData.surname }}</span>
       </h2>
@@ -18,9 +22,10 @@ defineProps<{
         color="gray"
         square
         variant="ghost"
+        @click="() => sidebarStore.open(userData.id)"
       />
     </div>
-    <p v-if="userData.description" class="text-sm text-slate-600">
+    <p v-if="userData.description" class="text-sm text-emerald-800">
       {{ userData.description }}
     </p>
   </header>

@@ -1,12 +1,11 @@
 <script setup lang="ts">
-const isOpen = ref(false);
+import { useSidebarStore } from "@/stores/sidebar";
+const sidebarStore = useSidebarStore();
 </script>
 
 <template>
   <div>
-    <UButton label="Open" @click="isOpen = true" />
-
-    <USlideover v-model="isOpen">
+    <USlideover v-model="sidebarStore.isOpen">
       <UCard
         class="flex flex-col flex-1 overflow-y-auto"
         :ui="{

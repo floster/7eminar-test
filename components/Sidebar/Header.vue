@@ -1,10 +1,11 @@
 <script setup lang="ts">
-const titleAction = ref("Add");
+import { useSidebarStore } from "@/stores/sidebar";
+const sidebarStore = useSidebarStore();
 </script>
 
 <template>
   <header class="flex items-center justify-between">
-    <h2>{{ titleAction }} user</h2>
-    <UIButtonClose @click="() => console.log('close sidebar')" />
+    <h2>{{ sidebarStore.title }} user</h2>
+    <UIButtonClose @click="sidebarStore.close" />
   </header>
 </template>

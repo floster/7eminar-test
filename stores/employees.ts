@@ -96,6 +96,10 @@ export const useEmployeesStore = defineStore({
       },
     ] as Employee[],
   }),
-  getters: {},
+  getters: {
+    getEmployeeById: (state) => (id: number) => {
+      return state.employees.find((employee) => employee.id === id);
+    },
+  },
   actions: {},
 });

@@ -2,6 +2,12 @@
 import { toTypedSchema } from "@vee-validate/yup";
 import { object, string, date } from "yup";
 
+import type { Employee } from "@/types";
+
+const props = defineProps<{
+  data: Employee | null | undefined;
+}>();
+
 const schema = toTypedSchema(
   object({
     employee_name: string()
@@ -19,11 +25,18 @@ const { errors, defineField, handleSubmit } = useForm({
   validationSchema: schema,
 });
 
+// init form values
 const [employee_name] = defineField("employee_name");
 const [employee_surname] = defineField("employee_surname");
 const [employee_description] = defineField("employee_description");
-
 const [event_date] = defineField("event_date");
+
+// set default form values if exists
+if (props.data) {
+  employee_name.value = props.data.name;
+  employee_surname.value = props.data.surname;
+  employee_description.value = props.data.description;
+}
 
 const onSubmit = handleSubmit((values) => {
   console.log("Submitted with", values);
