@@ -1,4 +1,9 @@
-<script setup lang="ts"></script>
+<script setup lang="ts">
+import type { Employee } from "@/types";
+defineProps<{
+  data: Employee;
+}>();
+</script>
 
 <template>
   <UCard
@@ -9,9 +14,9 @@
     }"
   >
     <template #header>
-      <UserCardHeader />
+      <UserCardHeader :user-data="data" />
     </template>
 
-    <UserCardEvents />
+    <UserCardEvents :events="data.events" />
   </UCard>
 </template>

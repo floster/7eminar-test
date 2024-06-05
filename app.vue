@@ -1,6 +1,6 @@
 <template>
   <UContainer as="main" class="py-6">
-    <Filters />
+    <!-- <Filters /> -->
     <Users />
     <Sidebar />
   </UContainer>
