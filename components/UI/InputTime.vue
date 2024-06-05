@@ -1,7 +1,7 @@
 <script setup lang="ts">
 const time = defineModel<string>();
 defineProps<{
-  error?: string | boolean;
+  name?: string;
   label?: string;
 }>();
 </script>
@@ -9,7 +9,7 @@ defineProps<{
 <template>
   <UFormGroup
     :label="label"
-    :error="error"
+    :name="name"
     :ui="{ label: { base: 'text-indigo-900' } }"
   >
     <UInput v-model="time" type="time" icon="i-heroicons-clock" trailing />

@@ -15,14 +15,14 @@ export const useEmployeesStore = defineStore({
           {
             id: 1,
             date: "2021-12-12",
-            period: { start: "12:00", end: "13:00" },
+            period: { start: "13:30", end: "13:45" },
             kind: EventKinds.Offline,
             price: 100,
           },
           {
             id: 2,
             date: "2021-12-13",
-            period: { start: "12:00", end: "13:00" },
+            period: { start: "18:00", end: "19:30" },
             kind: EventKinds.Online,
             price: 50,
           },

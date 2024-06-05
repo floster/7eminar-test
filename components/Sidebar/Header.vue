@@ -5,7 +5,7 @@ const sidebarStore = useSidebarStore();
 
 <template>
   <header class="flex items-center justify-between">
-    <h2>{{ sidebarStore.title }} user</h2>
+    <h2>{{ sidebarStore.title }}</h2>
     <UIButtonClose @click="sidebarStore.close" />
   </header>
 </template>

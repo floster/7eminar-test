@@ -12,11 +12,6 @@ const userData = sidebarStore.editedUserId
 
 <template>
   <section class="flex flex-col gap-y-10">
-    <FormUserData :data="userData" />
-    <FormUserEvents :events="userData?.events" />
-    <footer class="grid grid-cols-2 gap-x-3">
-      <UButton color="rose" variant="outline" block>Delete User</UButton>
-      <UButton color="primary" variant="solid" block>Save</UButton>
-    </footer>
+    <FormUserEdit :data="userData" />
   </section>
 </template>

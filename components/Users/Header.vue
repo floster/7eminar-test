@@ -11,7 +11,7 @@ const sidebarStore = useSidebarStore();
       size="xl"
       variant="solid"
       class="ml-auto shrink-0"
-      @click="sidebarStore.open"
+      @click="() => sidebarStore.open(null)"
     >
       Add card</UButton
     >
