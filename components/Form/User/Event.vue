@@ -1,13 +1,28 @@
 <script setup lang="ts">
 import { EventKinds, type Event } from "@/types";
 
+import { useEmployeesStore } from "~/stores/employees";
+const employeeStore = useEmployeesStore();
+
 const consultation_kinds = Object.values(EventKinds);
 
 const event = defineModel<Event>({ required: true });
 
-defineProps<{
+const state = defineProps<{
   index: number;
+  employeeId: string | undefined;
+  eventsQty: number;
 }>();
+
+const emit = defineEmits<{
+  (e: "deleteEvent", id: string): void;
+}>();
+
+const handleDeleteEvent = () => {
+  if (!state.employeeId || !event.value.id) return;
+  emit("deleteEvent", event.value.id);
+  employeeStore.deleteEvent(state.employeeId, event.value.id);
+};
 </script>
 
 <template>
@@ -16,7 +31,7 @@ defineProps<{
       <h3 class="text-indigo-900 dark:text-indigo-200 text-sm">
         {{ event.date }}
       </h3>
-      <UIButtonClose />
+      <UIButtonClose v-if="eventsQty > 1" @click="handleDeleteEvent" />
     </div>
     <div
       class="space-y-4 bg-indigo-100 dark:bg-indigo-900 text-indigo-900 dark:text-indigo-200 py-3 px-2 rounded"

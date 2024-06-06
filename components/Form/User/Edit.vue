@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import type { FormSubmitEvent } from "#ui/types";
-import type { Employee } from "@/types";
 
 import { useEmployeesStore } from "~/stores/employees";
 import { useSidebarStore } from "~/stores/sidebar";
@@ -13,15 +12,20 @@ const employeeStore = useEmployeesStore();
 const sidebarStore = useSidebarStore();
 
 const props = defineProps<{
-  data?: Employee | null | undefined;
+  userId?: string | null;
 }>();
 
+// if userId is provided, get the employee data
+const data = props.userId
+  ? employeeStore.getEmployeeById(props.userId)
+  : undefined;
+
 const state = reactive({
-  employee_name: props.data ? props.data.name : undefined,
-  employee_surname: props.data ? props.data.surname : undefined,
-  employee_description: props.data ? props.data.description : undefined,
+  employee_name: data ? data.name : undefined,
+  employee_surname: data ? data.surname : undefined,
+  employee_description: data ? data.description : undefined,
   event_date: undefined,
-  events: props.data ? props.data.events : [],
+  events: data ? data.events : [],
 });
 
 // watch for event_date changes and push an empty event to the events array
@@ -29,17 +33,33 @@ watch(
   () => state.event_date,
   (value) => {
     if (value) {
+      // check if there's already 10 events created
+      if (state.events.length >= 10) {
+        tooManyEvents.value = true;
+        state.event_date = undefined;
+        return;
+      }
+
       state.events = [createEmptyEvent(value), ...state.events];
       state.event_date = undefined;
+      noEvents.value = false;
     }
   }
 );
 
+const noEvents = ref(false);
+const tooManyEvents = ref(false);
+
 const onSubmit = (event: FormSubmitEvent<EmployeeSchema>) => {
+  // if there's no events, show an alert
+  if (state.events.length === 0) {
+    noEvents.value = true;
+    return;
+  }
   // if form passes validation
   // ...create/update employee
-  if (props.data) {
-    employeeStore.updateEmployee(props.data.id, createEmployee(event.data));
+  if (data) {
+    employeeStore.updateEmployee(data.id, createEmployee(event.data));
   } else {
     employeeStore.createEmployee(createEmployee(event.data));
   }
@@ -48,10 +68,17 @@ const onSubmit = (event: FormSubmitEvent<EmployeeSchema>) => {
 };
 
 const handleDeleteEmployee = () => {
-  if (props.data) {
-    employeeStore.deleteEmployee(props.data.id);
+  if (data) {
+    employeeStore.deleteEmployee(data.id);
   }
   sidebarStore.close();
+};
+
+const handleDeleteEvent = (id: string) => {
+  if (data) {
+    employeeStore.deleteEvent(data.id, id);
+    state.events = state.events.filter((event) => event.id !== id);
+  }
 };
 </script>
 
@@ -78,16 +105,36 @@ const handleDeleteEmployee = () => {
       <UIInputDate v-model="state.event_date" />
     </UFormGroup>
 
+    <UAlert
+      v-if="noEvents"
+      title="Create at least one event"
+      color="rose"
+      variant="outline"
+    />
+
+    <UAlert
+      v-if="tooManyEvents"
+      title="You can create only 10 events per employee"
+      color="amber"
+      variant="outline"
+    />
+
     <template v-for="(_, index) in state.events" :key="index">
-      <FormUserEvent v-model="state.events[index]" :index="index" />
+      <FormUserEvent
+        v-model="state.events[index]"
+        :index="index"
+        :employee-id="data?.id"
+        :events-qty="state.events.length"
+        @delete-event="(id) => handleDeleteEvent(id)"
+      />
     </template>
 
     <footer class="grid grid-cols-2 gap-x-3 pt-4">
       <UButton
-        :disable="!data"
         color="rose"
         variant="outline"
         block
+        :disabled="!data"
         @click="handleDeleteEmployee"
         >Delete User</UButton
       >

@@ -112,10 +112,15 @@ export const useEmployeesStore = defineStore({
       }
     },
     deleteEmployee(id: string | null | undefined) {
-      console.log("deleteEmployee", id);
-
       if (!id) return;
       this.employees = this.employees.filter((employee) => employee.id !== id);
+    },
+    deleteEvent(employeeId: string, eventId: string) {
+      const employee = this.employees.find(
+        (employee) => employee.id === employeeId
+      );
+      if (!employee) return;
+      employee.events = employee.events.filter((event) => event.id !== eventId);
     },
   },
 });
