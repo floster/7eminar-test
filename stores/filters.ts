@@ -1,7 +1,7 @@
 export const useFiltersStore = defineStore({
   id: "filters",
   state: () => ({
-    priceRangeCurrent: 1000,
+    priceRangeCurrent: 10000,
     priceRangeStep: 50,
   }),
   getters: {},

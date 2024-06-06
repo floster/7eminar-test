@@ -6,6 +6,7 @@ const employeeStore = useEmployeesStore()
 
 const router = useRouter();
 
+onBeforeMount(() => {
 // if route contains 'priceRange' query, set the price range to the current value
 if (router.currentRoute.value.query.priceRange) {
   const priceRangeFromPath = parseInt(router.currentRoute.value.query.priceRange as string)
@@ -17,16 +18,24 @@ if (router.currentRoute.value.query.priceRange) {
   router.push({
     query: { ...router.currentRoute.value.query, priceRange: priceRange.toString() }
   });
+} else {
+  // if there is no 'priceRange' query in the URL, set the price range to the max price
+  filtersStore.setPriceRangeCurrent(employeeStore.getMaxPrice)
 }
-// watch for changes in the price range and save it to the URL query as 'price'
+})
 
+// watch for changes in the price range and save it to the URL query as 'price'
 watch(() => filtersStore.priceRangeCurrent, (value) => {
   router.push({
     query: { ...router.currentRoute.value.query, priceRange: value.toString() }
   });
 });
-</script>
 
+// watch for employeeStore.getMaxPrice changes and set the price range according to the max price
+watch(() => employeeStore.getMaxPrice, (value) => {
+  if (filtersStore.priceRangeCurrent > value) filtersStore.setPriceRangeCurrent(value)
+});
+</script>
 
 <template>
   <div class="flex flex-col">

@@ -12,5 +12,5 @@ const toggleSortOrder = () => {
 
 <template>
   <UserCardEventsHeader class="mb-3" @toggle-sort="toggleSortOrder" />
-  <UserCardEventsList if="userId" :events="events" :sort-order="sortOrder" />
+  <UserCardEventsList v-model="sortOrder" if="userId" :events="events" />
 </template>
