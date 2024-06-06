@@ -143,6 +143,16 @@ export const useEmployeesStore = defineStore({
   getters: {
     getEmployeeById: (state) => (id: string) =>
       state.employees.find((employee) => employee.id === id),
+    getEmployeeEvents: (state) => (id: string) => {
+      const employee = state.employees.find((employee) => employee.id === id);
+      return employee ? employee.events : [];
+    },
+    getEmployeeEventsByDate: (state) => (id: string, date: string) => {
+      const employee = state.employees.find((employee) => employee.id === id);
+      return employee
+        ? employee.events.filter((event) => event.date === date)
+        : [];
+    },
     getTotalEmployees: (state) => state.employees.length,
     getEmployeesPage: (state) => {
       const { currentPage, perPage } = usePaginationStore();

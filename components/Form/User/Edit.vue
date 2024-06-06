@@ -125,7 +125,7 @@ const handleDeleteEvent = (id: string) => {
         :index="index"
         :employee-id="data?.id"
         :events-qty="state.events.length"
-        @delete-event="(id) => handleDeleteEvent(id)"
+        @delete-event="(id: string) => handleDeleteEvent(id)"
       />
     </template>
 
@@ -138,9 +138,9 @@ const handleDeleteEvent = (id: string) => {
         @click="handleDeleteEmployee"
         >Delete User</UButton
       >
-      <UButton color="primary" variant="solid" type="submit" block
-        >Save</UButton
-      >
+      <UButton color="primary" variant="solid" type="submit" block>{{
+        data ? "Save" : "Create"
+      }}</UButton>
     </footer>
   </UForm>
 </template>
