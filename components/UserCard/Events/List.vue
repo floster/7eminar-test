@@ -1,14 +1,38 @@
 <script setup lang="ts">
 import type { Events } from "@/types";
-defineProps<{
+
+import { useFiltersStore } from "~/stores/filters";
+
+import { filterEventsByMaxPrice, sortEventsByDate } from "~/helpers";
+
+const props = defineProps<{
   events: Events;
+  sortOrder: "asc" | "desc";
 }>();
+
+const filtersStore = useFiltersStore();
+
+const filteredEvents = computed(() =>
+  filterEventsByMaxPrice(props.events, filtersStore.priceRangeCurrent)
+);
+
+// TODO: investigate why the sorting is not working
+const sortedEvents = computed(() =>
+  sortEventsByDate(filteredEvents.value, props.sortOrder)
+);
 </script>
 
 <template>
-  <TransitionGroup name="list" tag="div" class="flex flex-col gap-y-2">
+  <UAlert
+    v-if="filteredEvents.length <= 0"
+    color="amber"
+    variant="outline"
+    title="No consultations in this price range."
+    description="Try to increase the price range."
+  />
+  <TransitionGroup v-else name="list" tag="div" class="flex flex-col gap-y-2">
     <UserCardEventsItem
-      v-for="event in events"
+      v-for="event in sortedEvents"
       :key="event.id"
       :event="event"
     />

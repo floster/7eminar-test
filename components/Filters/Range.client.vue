@@ -1,9 +1,30 @@
 <script setup lang="ts">
-const minValue = ref(300);
-const maxValue = ref(3000);
-const step = ref(100);
+import {useFiltersStore} from "~/stores/filters"
+import {useEmployeesStore} from "~/stores/employees"
+const filtersStore = useFiltersStore()
+const employeeStore = useEmployeesStore()
 
-const value = ref(maxValue.value / 2);
+const router = useRouter();
+
+// if route contains 'priceRange' query, set the price range to the current value
+if (router.currentRoute.value.query.priceRange) {
+  const priceRangeFromPath = parseInt(router.currentRoute.value.query.priceRange as string)
+
+  // if the price range from the URL is greater than the max price, set the price range to the max price
+  const priceRange = priceRangeFromPath > employeeStore.getMaxPrice ? employeeStore.getMaxPrice : priceRangeFromPath
+  filtersStore.setPriceRangeCurrent(priceRange)
+  // ...and set rewrite the URL query to the current price range
+  router.push({
+    query: { ...router.currentRoute.value.query, priceRange: priceRange.toString() }
+  });
+}
+// watch for changes in the price range and save it to the URL query as 'price'
+
+watch(() => filtersStore.priceRangeCurrent, (value) => {
+  router.push({
+    query: { ...router.currentRoute.value.query, priceRange: value.toString() }
+  });
+});
 </script>
 
 
@@ -11,18 +32,18 @@ const value = ref(maxValue.value / 2);
   <div class="flex flex-col">
     <p class="flex gap-x-4 mb-3 text-sm">
       Filter consultations by price:
-      <pre>{{ minValue }} - {{ value }}</pre>
+      <pre>{{ employeeStore.getMinPrice }} - {{ filtersStore.priceRangeCurrent }}</pre>
     </p>
     <URange
-      v-model="value"
-      :min="minValue"
-      :max="maxValue"
-      :step="step"
+      v-model="filtersStore.priceRangeCurrent"
+      :min="employeeStore.getMinPrice"
+      :max="employeeStore.getMaxPrice"
+      :step="filtersStore.priceRangeStep"
       color="indigo"
     />
     <div class="flex items-center justify-between text-sm">
-      <span>{{ minValue }}</span
-      ><span>{{ maxValue }}</span>
+      <span>{{ employeeStore.getMinPrice }}</span
+      ><span>{{ employeeStore.getMaxPrice }}</span>
     </div>
   </div>
 </template>

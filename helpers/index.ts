@@ -19,3 +19,18 @@ export const createEmptyEvent = (date: string): Event => ({
   kind: undefined,
   price: 0,
 });
+
+export const filterEventsByMaxPrice = (
+  events: Events,
+  maxPrice: number
+): Events => events.filter((event) => event.price <= maxPrice);
+
+export const sortEventsByDate = (
+  events: Events,
+  direction: "asc" | "desc" = "asc"
+): Events =>
+  events.sort((a, b) => {
+    const dateA = new Date(a.date).getTime();
+    const dateB = new Date(b.date).getTime();
+    return direction === "asc" ? dateA - dateB : dateB - dateA;
+  });
