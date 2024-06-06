@@ -13,7 +13,9 @@ defineProps<{
 <template>
   <div class="flex flex-col">
     <div class="flex items-center justify-between">
-      <h3 class="text-indigo-900 dark:text-indigo-200 text-sm">05-06-2024</h3>
+      <h3 class="text-indigo-900 dark:text-indigo-200 text-sm">
+        {{ event.date }}
+      </h3>
       <UIButtonClose />
     </div>
     <div
@@ -27,7 +29,7 @@ defineProps<{
         >
           <UInput
             v-model="event.period.start"
-            type="time"
+            type="Start time"
             icon="i-heroicons-clock"
             trailing
           />

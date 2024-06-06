@@ -10,19 +10,19 @@ export interface EventPeriod {
 }
 
 export type Event = {
-  id: number;
+  id: string;
   date: string;
   period: EventPeriod;
-  kind: EventKinds;
+  kind: EventKinds | undefined;
   price: number;
 };
 
 export type Events = Event[];
 
 export type Employee = {
-  id: number;
+  id: string;
   name: string;
   surname: string;
-  description: string;
-  events: Events;
+  description: string | undefined;
+  events: Events | [];
 };

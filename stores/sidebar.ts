@@ -3,11 +3,11 @@ export const useSidebarStore = defineStore({
   state: () => ({
     isOpen: false,
     title: "Sidebar",
-    editedUserId: null as number | null,
+    editedUserId: null as string | null,
   }),
   getters: {},
   actions: {
-    open(id: number | null = null) {
+    open(id: string | null = null) {
       this.editedUserId = id;
       this.title = id ? "Edit user" : "Create user";
       this.isOpen = true;
