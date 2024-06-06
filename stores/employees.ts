@@ -111,5 +111,11 @@ export const useEmployeesStore = defineStore({
         this.employees[index] = employee;
       }
     },
+    deleteEmployee(id: string | null | undefined) {
+      console.log("deleteEmployee", id);
+
+      if (!id) return;
+      this.employees = this.employees.filter((employee) => employee.id !== id);
+    },
   },
 });

@@ -35,13 +35,24 @@ watch(
   }
 );
 
-async function onSubmit(event: FormSubmitEvent<EmployeeSchema>) {
+const onSubmit = (event: FormSubmitEvent<EmployeeSchema>) => {
   // if form passes validation
   // ...create/update employee
-  employeeStore.createEmployee(createEmployee(event.data));
+  if (props.data) {
+    employeeStore.updateEmployee(props.data.id, createEmployee(event.data));
+  } else {
+    employeeStore.createEmployee(createEmployee(event.data));
+  }
   // ...close sidebar
   sidebarStore.close();
-}
+};
+
+const handleDeleteEmployee = () => {
+  if (props.data) {
+    employeeStore.deleteEmployee(props.data.id);
+  }
+  sidebarStore.close();
+};
 </script>
 
 <template>
@@ -72,7 +83,14 @@ async function onSubmit(event: FormSubmitEvent<EmployeeSchema>) {
     </template>
 
     <footer class="grid grid-cols-2 gap-x-3 pt-4">
-      <UButton color="rose" variant="outline" block>Delete User</UButton>
+      <UButton
+        :disable="!data"
+        color="rose"
+        variant="outline"
+        block
+        @click="handleDeleteEmployee"
+        >Delete User</UButton
+      >
       <UButton color="primary" variant="solid" type="submit" block
         >Save</UButton
       >
