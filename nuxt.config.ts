@@ -2,7 +2,7 @@
 export default defineNuxtConfig({
   devtools: { enabled: true },
   css: ["~/assets/css/main.css"],
-  modules: ["@pinia/nuxt", "@nuxt/eslint", "@nuxt/ui", "@vee-validate/nuxt"],
+  modules: ["@pinia/nuxt", "@nuxt/eslint", "@nuxt/ui"],
   typescript: {
     typeCheck: true,
   },

@@ -1,44 +1,28 @@
-# Nuxt 3 Minimal Starter
+# Employees Simple Dashboard
 
-Look at the [Nuxt 3 documentation](https://nuxt.com/docs/getting-started/introduction) to learn more.
+### Stack:
+
+Nuxt 3, Nuxt UI, Pinia, TypeScript, tailwindcss, yup
+
+[Github repository](https://github.com/floster/7eminar-test)
+
+[Netlify](https://employees-dashboard-060624.netlify.app)
 
 ## Setup
 
-Make sure to install the dependencies:
-
 ```bash
-# npm
-npm install
+# clone repository
+git clone git@github.com:floster/7eminar-test.git
 
-# pnpm
-pnpm install
+# enter project's folder
+cd 7eminar-test
 
-# yarn
-yarn install
-
-# bun
+# install dependencies
 bun install
-```
 
-## Development Server
-
-Start the development server on `http://localhost:3000`:
-
-```bash
-# npm
-npm run dev
-
-# pnpm
-pnpm run dev
-
-# yarn
-yarn dev
-
-# bun
+# start the development server on `http://localhost:3000`
 bun run dev
 ```
-
-## Production
 
 Build the application for production:
 
@@ -71,5 +55,3 @@ yarn preview
 # bun
 bun run preview
 ```
-
-Check out the [deployment documentation](https://nuxt.com/docs/getting-started/deployment) for more information.

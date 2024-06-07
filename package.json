@@ -14,13 +14,10 @@
     "@nuxt/ui": "^2.16.0",
     "@pinia/nuxt": "^0.5.1",
     "@types/uuid": "^9.0.8",
-    "@vee-validate/nuxt": "^4.13.0",
-    "@vee-validate/yup": "^4.13.0",
     "date-fns": "^3.6.0",
     "nuxt": "^3.11.2",
     "uuid": "^9.0.1",
     "v-calendar": "^3.1.2",
-    "vee-validate": "^4.13.0",
     "vue": "^3.4.27",
     "vue-router": "^4.3.2",
     "yup": "^1.4.0"
