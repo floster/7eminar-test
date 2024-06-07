@@ -7,9 +7,8 @@ import { filterEventsByMaxPrice, sortEventsByDate } from "~/helpers";
 
 const props = defineProps<{
   events: Events;
+  sortOrder: "asc" | "desc";
 }>();
-
-const order = defineModel<"asc" | "desc">({ required: true });
 
 const filtersStore = useFiltersStore();
 
@@ -18,13 +17,20 @@ const filteredEvents = computed(() =>
 );
 
 const sortedEvents = computed(() =>
-  sortEventsByDate(filteredEvents.value, order.value)
+  sortEventsByDate(filteredEvents.value, props.sortOrder)
 );
 </script>
 
 <template>
   <UAlert
-    v-if="sortedEvents.length <= 0"
+    v-if="events.length <= 0"
+    color="amber"
+    variant="outline"
+    title="No consultations found."
+    description="Try to add one."
+  />
+  <UAlert
+    v-else-if="sortedEvents.length <= 0"
     color="amber"
     variant="outline"
     title="No consultations in this price range."

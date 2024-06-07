@@ -4,15 +4,15 @@ export enum EventKinds {
   Phone = "Telephone consultation",
 }
 
-export interface EventPeriod {
-  start: string;
-  end: string;
+export interface TimePeriod<T> {
+  start: T;
+  end: T;
 }
 
 export type Event = {
   id: string;
-  date: string;
-  period: EventPeriod;
+  date: Date;
+  period: TimePeriod<string>;
   kind: EventKinds | undefined;
   price: number;
 };

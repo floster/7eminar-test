@@ -13,15 +13,14 @@ watch(() => filtersStore.priceRangeCurrent, (value) => {
   });
 });
 
-// watch for employeeStore.getMaxPrice changes and set the price range according to the max price
-// when we delete an employee/event with a higher price than the current price range
-watch(() => employeeStore.getMaxPrice, (value) => {
-  if (filtersStore.priceRangeCurrent > value) filtersStore.setPriceRangeCurrent(value)
+// watch for max price changes and reset the price range to the max price
+watchEffect(() => {
+    filtersStore.setPriceRangeCurrent(employeeStore.getMaxPrice);
 });
 </script>
 
 <template>
-  <div class="flex flex-col">
+  <div v-if="employeeStore.getMaxPrice > employeeStore.getMinPrice" class="flex flex-col">
     <p class="flex gap-x-4 mb-3 text-sm">
       Filter consultations by price:
       <pre>{{ employeeStore.getMinPrice }} - {{ filtersStore.priceRangeCurrent }}</pre>

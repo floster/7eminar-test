@@ -4,7 +4,9 @@ export const useFiltersStore = defineStore({
     priceRangeCurrent: 10000,
     priceRangeStep: 50,
   }),
-  getters: {},
+  getters: {
+    getPriceRangeCurrent: (state) => state.priceRangeCurrent,
+  },
   actions: {
     setPriceRangeCurrent(value: number) {
       this.priceRangeCurrent = value;

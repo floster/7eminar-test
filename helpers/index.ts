@@ -1,8 +1,25 @@
 import { v4 as uuid } from "uuid";
-import { format } from "date-fns";
-import type { Event, Employee, Events, EventKinds } from "../types";
+import type { Event, Employee, Events, EventKinds, TimePeriod } from "../types";
 
 import { type EmployeeSchema } from "~/schemas";
+
+const roundToNearestQuarterHour = (): TimePeriod<string> => {
+  const date = new Date();
+  const minutes = date.getMinutes();
+  const roundedMinutes = Math.round(minutes / 15) * 15;
+  const _start = new Date(date.setMinutes(roundedMinutes));
+  const _end = new Date(date.setMinutes(roundedMinutes + 30));
+  return {
+    start: _start.toLocaleTimeString("uk-UA", {
+      hour: "2-digit",
+      minute: "2-digit",
+    }),
+    end: _end.toLocaleTimeString("uk-UA", {
+      hour: "2-digit",
+      minute: "2-digit",
+    }),
+  };
+};
 
 export const createEmployee = (data: EmployeeSchema): Employee => ({
   id: uuid(),
@@ -12,13 +29,15 @@ export const createEmployee = (data: EmployeeSchema): Employee => ({
   events: (data.events as Events) || [],
 });
 
-export const createEmptyEvent = (date: string): Event => ({
-  id: uuid(),
-  date: format(new Date(date), "dd-MM-yyyy"),
-  period: { start: "10:00", end: "10:30" },
-  kind: undefined,
-  price: 0,
-});
+export const createEmptyEvent = (date: string): Event => {
+  return {
+    id: uuid(),
+    date: new Date(date),
+    period: roundToNearestQuarterHour(),
+    kind: undefined,
+    price: 0,
+  };
+};
 
 export const filterEventsByMaxPrice = (
   events: Events,
@@ -34,35 +53,3 @@ export const sortEventsByDate = (
     const dateB = new Date(b.date).getTime();
     return direction === "asc" ? dateA - dateB : dateB - dateA;
   });
-
-export const timeToPlainNumber = (time: string): number =>
-  parseInt(time.replace(":", ""));
-
-export interface PlainTimePeriod {
-  start: number;
-  end: number;
-}
-
-export const getEventsTimeIntervals = (
-  events: Events,
-  kind: EventKinds | undefined
-): PlainTimePeriod[] | null => {
-  if (!kind) return null;
-  return events
-    .filter((events) => events.kind === kind)
-    .map((event) => ({
-      start: timeToPlainNumber(event.period.start),
-      end: timeToPlainNumber(event.period.end),
-    }));
-};
-
-export const isTimeOverlapIntervals = (
-  time: number,
-  events: Events,
-  kind: EventKinds | undefined
-): boolean => {
-  const intervals = getEventsTimeIntervals(events, kind);
-  if (!intervals) return false;
-
-  return intervals.some((e) => time >= e.start && time <= e.end);
-};

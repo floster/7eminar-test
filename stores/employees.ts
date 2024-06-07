@@ -7,135 +7,26 @@ export const useEmployeesStore = defineStore({
   id: "employees",
   state: () => ({
     employees: [
-      // yet another employee with 5 events
       {
-        id: "3",
-        name: "John",
-        surname: "Smith",
-        description: "a very good employee",
+        id: "1d736252-91e6-48e9-b144-587064b3c0d0",
+        name: "Petro",
+        surname: "Bamper",
+        description: "A very good specialist",
         events: [
-          {
-            id: "1",
-            date: "12-12-2021",
-            period: { start: "12:00", end: "13:00" },
-            kind: EventKinds.Offline,
-            price: 2500,
-          },
-          {
-            id: "2",
-            date: "12-12-2021",
-            period: { start: "15:00", end: "18:00" },
-            kind: EventKinds.Offline,
-            price: 500,
-          },
-          {
-            id: "3",
-            date: "12-12-2021",
-            period: { start: "08:00", end: "09:30" },
-            kind: EventKinds.Phone,
-            price: 750,
-          },
-          {
-            id: "4",
-            date: "15-12-2021",
-            period: { start: "12:00", end: "13:00" },
-            kind: EventKinds.Offline,
-            price: 1000,
-          },
-          {
-            id: "5",
-            date: "15-12-2021",
-            period: { start: "12:00", end: "13:00" },
-            kind: EventKinds.Online,
-            price: 500,
-          },
-        ],
-      },
-      {
-        id: "1",
-        name: "John",
-        surname: "Doe",
-        description: "a very good employee",
-        events: [
-          {
-            id: "1",
-            date: "13-12-2021",
-            period: { start: "13:30", end: "13:45" },
-            kind: EventKinds.Offline,
-            price: 100,
-          },
-          {
-            id: "2",
-            date: "12-12-2021",
-            period: { start: "18:00", end: "19:30" },
-            kind: EventKinds.Online,
-            price: 50,
-          },
-        ],
-      },
-      {
-        id: "2",
-        name: "Jane",
-        surname: "Doe",
-        description: "a very good employee",
-        events: [
-          {
-            id: "1",
-            date: "12-12-2021",
-            period: { start: "12:00", end: "13:00" },
-            kind: EventKinds.Offline,
-            price: 100,
-          },
-          {
-            id: "2",
-            date: "12-12-2021",
-            period: { start: "12:00", end: "13:00" },
-            kind: EventKinds.Online,
-            price: 50,
-          },
-        ],
-      },
-      {
-        id: "30",
-        name: "John",
-        surname: "Smith",
-        description: "a very good employee",
-        events: [
-          {
-            id: "1",
-            date: "12-12-2021",
-            period: { start: "12:00", end: "13:00" },
-            kind: EventKinds.Offline,
-            price: 2500,
-          },
-          {
-            id: "2",
-            date: "12-12-2021",
-            period: { start: "12:00", end: "13:00" },
-            kind: EventKinds.Online,
-            price: 500,
-          },
-          {
-            id: "3",
-            date: "12-12-2021",
-            period: { start: "12:00", end: "13:00" },
-            kind: EventKinds.Phone,
-            price: 750,
-          },
-          {
-            id: "4",
-            date: "12-12-2021",
-            period: { start: "12:00", end: "13:00" },
-            kind: EventKinds.Offline,
-            price: 1000,
-          },
-          {
-            id: "5",
-            date: "12-12-2021",
-            period: { start: "12:00", end: "13:00" },
-            kind: EventKinds.Online,
-            price: 500,
-          },
+          // {
+          //   id: "424a04c6-c43d-423b-b07a-cabafc1af2e8",
+          //   date: "Thu Jun 21 2024 00:00:00 GMT+0300 (Eastern European Summer Time)" as unknown as Date,
+          //   period: { start: "10:00", end: "11:00" },
+          //   kind: "Online consultation",
+          //   price: 50,
+          // },
+          // {
+          //   id: "424a04c6-c43d-423b-b07a-cabafc1af2e8",
+          //   date: "Thu Jun 20 2024 00:00:00 GMT+0300 (Eastern European Summer Time)" as unknown as Date,
+          //   period: { start: "12:15", end: "12:45" },
+          //   kind: "Offline consultation",
+          //   price: 3000,
+          // },
         ],
       },
     ] as Employee[],
@@ -147,7 +38,7 @@ export const useEmployeesStore = defineStore({
       const employee = state.employees.find((employee) => employee.id === id);
       return employee ? employee.events : [];
     },
-    getEmployeeEventsByDate: (state) => (id: string, date: string) => {
+    getEmployeeEventsByDate: (state) => (id: string, date: Date) => {
       const employee = state.employees.find((employee) => employee.id === id);
       return employee
         ? employee.events.filter((event) => event.date === date)
@@ -161,18 +52,20 @@ export const useEmployeesStore = defineStore({
       return state.employees.slice(start, end);
     },
     getMinPrice: (state) => {
-      return Math.min(
+      const result = Math.min(
         ...state.employees.flatMap((employee) =>
           employee.events.map((event) => event.price)
         )
       );
+      return isFinite(result) ? result : 0;
     },
     getMaxPrice: (state) => {
-      return Math.max(
+      const result = Math.max(
         ...state.employees.flatMap((employee) =>
           employee.events.map((event) => event.price)
         )
       );
+      return isFinite(result) ? result : 0;
     },
   },
   actions: {

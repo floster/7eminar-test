@@ -2,6 +2,7 @@
 import type { FormSubmitEvent } from "#ui/types";
 
 import { useEmployeesStore } from "~/stores/employees";
+import { useFiltersStore } from "~/stores/filters";
 import { useSidebarStore } from "~/stores/sidebar";
 
 import { employeeSchema, type EmployeeSchema } from "~/schemas";
@@ -9,6 +10,7 @@ import { employeeSchema, type EmployeeSchema } from "~/schemas";
 import { createEmptyEvent, createEmployee } from "~/helpers";
 
 const employeeStore = useEmployeesStore();
+const filtersStore = useFiltersStore();
 const sidebarStore = useSidebarStore();
 
 const props = defineProps<{
@@ -56,6 +58,7 @@ const onSubmit = (event: FormSubmitEvent<EmployeeSchema>) => {
     noEvents.value = true;
     return;
   }
+
   // if form passes validation
   // ...create/update employee
   if (data) {
@@ -63,6 +66,7 @@ const onSubmit = (event: FormSubmitEvent<EmployeeSchema>) => {
   } else {
     employeeStore.createEmployee(createEmployee(event.data));
   }
+
   // ...close sidebar
   sidebarStore.close();
 };

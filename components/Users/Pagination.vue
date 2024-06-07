@@ -20,6 +20,7 @@ watch(
 
 <template>
   <UPagination
+    v-if="employeeStore.getTotalEmployees > 0"
     v-model="paginationStore.currentPage"
     :page-count="paginationStore.perPage"
     :total="employeeStore.getTotalEmployees"

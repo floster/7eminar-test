@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import { EventKinds, type Event } from "@/types";
-import { timeToPlainNumber, isTimeOverlapIntervals } from "~/helpers";
 
 import { useEmployeesStore } from "~/stores/employees";
 const employeeStore = useEmployeesStore();
@@ -25,27 +24,18 @@ const handleDeleteEvent = () => {
   employeeStore.deleteEvent(state.employeeId, event.value.id);
 };
 
-//================================================
-// TODO: need to think about how to implement this properly
-// const events = employeeStore.getEmployeeEventsByDate(
-//   state.employeeId!,
-//   event.value.date
-// );
-// const isOverlap = computed(
-//   () =>
-//     isTimeOverlapIntervals(
-//       timeToPlainNumber(event.value.period.start),
-//       events,
-//       event.value.kind
-//     )
-// );
+const validateEndTime = () => {
+  if (event.value.period.start >= event.value.period.end) {
+    event.value.period.end = event.value.period.start + 1;
+  }
+};
 </script>
 
 <template>
   <div class="flex flex-col">
     <div class="flex items-center justify-between">
       <h3 class="text-indigo-900 dark:text-indigo-200 text-sm">
-        {{ event.date }}
+        {{ new Date(event.date).toLocaleDateString("uk-UA") }}
       </h3>
       <UIButtonClose v-if="eventsQty > 1" @click="handleDeleteEvent" />
     </div>
@@ -62,6 +52,7 @@ const handleDeleteEvent = () => {
           v-model="event.period.end"
           label="End time"
           :name="`events[${index}].period.end`"
+          @change="validateEndTime"
         />
         <UFormGroup label="Price" :name="`events[${index}].price`">
           <UInput

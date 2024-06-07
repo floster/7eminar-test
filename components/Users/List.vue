@@ -4,7 +4,14 @@ const employeesStore = useEmployeesStore();
 </script>
 
 <template>
-  <TransitionGroup name="list" tag="div" class="flex flex-col gap-y-8">
+  <UAlert
+    v-if="employeesStore.getEmployeesPage.length === 0"
+    color="white"
+    variant="outline"
+    title="No employees yet. Try to add some."
+  />
+
+  <TransitionGroup v-else name="list" tag="div" class="flex flex-col gap-y-8">
     <UserCard
       v-for="employee in employeesStore.getEmployeesPage"
       :key="employee.id"
