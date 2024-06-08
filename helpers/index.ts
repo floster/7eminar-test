@@ -1,8 +1,11 @@
 import { v4 as uuid } from "uuid";
-import type { Event, Employee, Events, EventKinds, TimePeriod } from "../types";
+import type { Event, Employee, Events, TimePeriod } from "../types";
+
+import moment from "moment";
 
 import { type EmployeeSchema } from "~/schemas";
 
+// get the time with minutes rounded to the nearest quarter (15 minutes)
 const roundToNearestQuarterHour = (): TimePeriod<string> => {
   const date = new Date();
   const minutes = date.getMinutes();
@@ -32,6 +35,7 @@ export const createEmployee = (data: EmployeeSchema): Employee => ({
 export const createEmptyEvent = (date: string): Event => {
   return {
     id: uuid(),
+    dateCreated: new Date(),
     date: new Date(date),
     period: roundToNearestQuarterHour(),
     kind: undefined,
@@ -53,3 +57,21 @@ export const sortEventsByDate = (
     const dateB = new Date(b.date).getTime();
     return direction === "asc" ? dateA - dateB : dateB - dateA;
   });
+
+// date/time tests
+export const isTimeSameOrBefore = (startTime: string, endTime: string) => {
+  return moment(startTime, "HH:mm").isSameOrBefore(moment(endTime, "HH:mm"));
+};
+
+export const isTimeSameOrAfter = (startTime: string, endTime: string) => {
+  return moment(endTime, "HH:mm").isSameOrAfter(moment(startTime, "HH:mm"));
+};
+
+export const isTimeBetween = (start: string, end: string, time: string) => {
+  return moment(time, "HH:mm").isBetween(
+    moment(start, "HH:mm"),
+    moment(end, "HH:mm"),
+    "minute",
+    "[]"
+  );
+};

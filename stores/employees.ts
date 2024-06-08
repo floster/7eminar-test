@@ -33,23 +33,15 @@ export const useEmployeesStore = defineStore("employees", {
   getters: {
     getEmployeeById: (state) => (id: string) =>
       state.employees.find((employee) => employee.id === id),
-    getEmployeeEvents: (state) => (id: string) => {
-      const employee = state.employees.find((employee) => employee.id === id);
-      return employee ? employee.events : [];
-    },
-    getEmployeeEventsByDate: (state) => (id: string, date: Date) => {
-      const employee = state.employees.find((employee) => employee.id === id);
-      return employee
-        ? employee.events.filter((event) => event.date === date)
-        : [];
-    },
     getTotalEmployees: (state) => state.employees.length,
+    // get employees for the current pagination page
     getEmployeesPage: (state) => {
       const { currentPage, perPage } = usePaginationStore();
       const start = (currentPage - 1) * perPage;
       const end = start + perPage;
       return state.employees.slice(start, end);
     },
+    // calc min/max available price among all employees
     getMinPrice: (state) => {
       const result = Math.min(
         ...state.employees.flatMap((employee) =>

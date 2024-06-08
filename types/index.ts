@@ -11,6 +11,7 @@ export interface TimePeriod<T> {
 
 export type Event = {
   id: string;
+  dateCreated: Date;
   date: Date;
   period: TimePeriod<string>;
   kind: EventKinds | undefined;

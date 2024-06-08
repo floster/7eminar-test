@@ -2,7 +2,6 @@
 import type { FormSubmitEvent } from "#ui/types";
 
 import { useEmployeesStore } from "~/stores/employees";
-import { useFiltersStore } from "~/stores/filters";
 import { useSidebarStore } from "~/stores/sidebar";
 
 import { employeeSchema, type EmployeeSchema } from "~/schemas";
@@ -10,7 +9,6 @@ import { employeeSchema, type EmployeeSchema } from "~/schemas";
 import { createEmptyEvent, createEmployee } from "~/helpers";
 
 const employeeStore = useEmployeesStore();
-const filtersStore = useFiltersStore();
 const sidebarStore = useSidebarStore();
 
 const props = defineProps<{
@@ -123,15 +121,18 @@ const handleDeleteEvent = (id: string) => {
       variant="outline"
     />
 
-    <template v-for="(_, index) in state.events" :key="index">
+    <TransitionGroup tag="div" name="events">
       <FormUserEvent
+        v-for="(_, index) in state.events"
+        :key="index"
         v-model="state.events[index]"
         :index="index"
         :employee-id="data?.id"
         :events-qty="state.events.length"
+        :events="state.events"
         @delete-event="(id: string) => handleDeleteEvent(id)"
       />
-    </template>
+    </TransitionGroup>
 
     <footer class="grid grid-cols-2 gap-x-3 pt-4">
       <UButton
@@ -148,3 +149,23 @@ const handleDeleteEvent = (id: string) => {
     </footer>
   </UForm>
 </template>
+
+<style scoped>
+.events-move, /* apply transition to moving elements */
+.events-enter-active,
+.events-leave-active {
+  transition: all 0.2s ease;
+}
+
+.events-enter-from,
+.events-leave-to {
+  opacity: 0;
+  transform: translateY(5px);
+}
+
+/* ensure leaving items are taken out of layout flow so that moving
+   animations can be calculated correctly. */
+.events-leave-active {
+  position: absolute;
+}
+</style>

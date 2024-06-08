@@ -1,13 +1,6 @@
 import { object, array, string, number, date, type InferType } from "yup";
-import moment from "moment";
 
-const isSameOrBefore = (startTime: string, endTime: string) => {
-  return moment(startTime, "HH:mm").isSameOrBefore(moment(endTime, "HH:mm"));
-};
-
-const isSameOrAfter = (startTime: string, endTime: string) => {
-  return moment(endTime, "HH:mm").isSameOrAfter(moment(startTime, "HH:mm"));
-};
+import { isTimeSameOrAfter, isTimeSameOrBefore } from "~/helpers";
 
 export const employeeSchema = object({
   employee_name: string()
@@ -31,7 +24,7 @@ export const employeeSchema = object({
             "is-same-or-before",
             "start time should be before end time",
             function (value) {
-              return isSameOrBefore(value, this.parent.end);
+              return isTimeSameOrBefore(value, this.parent.end);
             }
           ),
         end: string()
@@ -44,7 +37,7 @@ export const employeeSchema = object({
             "is-same-or-after",
             "end time should be after start time",
             function (value) {
-              return isSameOrAfter(this.parent.start, value);
+              return isTimeSameOrAfter(this.parent.start, value);
             }
           ),
       }),
