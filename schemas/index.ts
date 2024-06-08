@@ -6,13 +6,6 @@ const isSameOrBefore = (startTime: string, endTime: string) => {
 };
 
 const isSameOrAfter = (startTime: string, endTime: string) => {
-  console.log(
-    "end",
-    moment(endTime, "HH:mm"),
-    "start",
-    moment(startTime, "HH:mm")
-  );
-
   return moment(endTime, "HH:mm").isSameOrAfter(moment(startTime, "HH:mm"));
 };
 

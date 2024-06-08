@@ -3,9 +3,7 @@ import { format } from "date-fns";
 
 // const date = ref(new Date());
 
-const date = defineModel<number | Date>({
-  default: null,
-});
+const date = defineModel<number | Date>();
 </script>
 
 <template>

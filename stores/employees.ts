@@ -1,10 +1,9 @@
 import type { Employee } from "~/types";
-import { EventKinds } from "~/types";
+// import { EventKinds } from "~/types";
 
 import { usePaginationStore } from "~/stores/pagination";
 
-export const useEmployeesStore = defineStore({
-  id: "employees",
+export const useEmployeesStore = defineStore("employees", {
   state: () => ({
     employees: [
       {
@@ -90,4 +89,5 @@ export const useEmployeesStore = defineStore({
       employee.events = employee.events.filter((event) => event.id !== eventId);
     },
   },
+  persist: true,
 });

@@ -11,7 +11,7 @@ const props = defineProps({
     type: [Date, Object] as PropType<
       DatePickerDate | DatePickerRangeObject | null
     >,
-    default: null,
+    default: () => new Date(),
   },
 });
 
@@ -26,6 +26,7 @@ const date = computed({
 });
 
 const attrs = {
+  highlight: true,
   transparent: true,
   borderless: true,
   color: "primary",
@@ -35,7 +36,11 @@ const attrs = {
 </script>
 
 <template>
-  <VCalendarDatePicker v-model="date" v-bind="{ ...attrs, ...$attrs }" />
+  <VCalendarDatePicker
+    v-model="date"
+    v-bind="{ ...attrs, ...$attrs }"
+    :min-date="new Date()"
+  />
 </template>
 
 <style>
