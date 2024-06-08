@@ -1,4 +1,20 @@
 import { object, array, string, number, date, type InferType } from "yup";
+import moment from "moment";
+
+const isSameOrBefore = (startTime: string, endTime: string) => {
+  return moment(startTime, "HH:mm").isSameOrBefore(moment(endTime, "HH:mm"));
+};
+
+const isSameOrAfter = (startTime: string, endTime: string) => {
+  console.log(
+    "end",
+    moment(endTime, "HH:mm"),
+    "start",
+    moment(startTime, "HH:mm")
+  );
+
+  return moment(endTime, "HH:mm").isSameOrAfter(moment(startTime, "HH:mm"));
+};
 
 export const employeeSchema = object({
   employee_name: string()
@@ -13,17 +29,31 @@ export const employeeSchema = object({
     object({
       period: object({
         start: string()
+          .required("required field")
           .matches(
             /^([0-1]?[0-9]|2[0-3]):[0-5][0-9]$/,
             "should be a time, e.g. 12:00"
           )
-          .required("required field"),
+          .test(
+            "is-same-or-before",
+            "start time should be before end time",
+            function (value) {
+              return isSameOrBefore(value, this.parent.end);
+            }
+          ),
         end: string()
+          .required("required field")
           .matches(
             /^([0-1]?[0-9]|2[0-3]):[0-5][0-9]$/,
             "should be a time, e.g. 12:00"
           )
-          .required("required field"),
+          .test(
+            "is-same-or-after",
+            "end time should be after start time",
+            function (value) {
+              return isSameOrAfter(this.parent.start, value);
+            }
+          ),
       }),
       price: number()
         .typeError("price should be a number")

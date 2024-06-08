@@ -23,12 +23,6 @@ const handleDeleteEvent = () => {
   emit("deleteEvent", event.value.id);
   employeeStore.deleteEvent(state.employeeId, event.value.id);
 };
-
-const validateEndTime = () => {
-  if (event.value.period.start >= event.value.period.end) {
-    event.value.period.end = event.value.period.start + 1;
-  }
-};
 </script>
 
 <template>
@@ -52,7 +46,6 @@ const validateEndTime = () => {
           v-model="event.period.end"
           label="End time"
           :name="`events[${index}].period.end`"
-          @change="validateEndTime"
         />
         <UFormGroup label="Price" :name="`events[${index}].price`">
           <UInput

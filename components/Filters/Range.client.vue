@@ -8,6 +8,10 @@ const router = useRouter();
 
 // watch for changes in the price range and save it to the URL query as 'price'
 watch(() => filtersStore.priceRangeCurrent, (value) => {
+  if (value === employeeStore.getMaxPrice) {
+    router.push({ query: { ...router.currentRoute.value.query, priceRange: undefined } });
+    return;
+  }
   router.push({
     query: { ...router.currentRoute.value.query, priceRange: value.toString() }
   });
