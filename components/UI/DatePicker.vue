@@ -11,7 +11,7 @@ const props = defineProps({
     type: [Date, Object] as PropType<
       DatePickerDate | DatePickerRangeObject | null
     >,
-    default: () => new Date(),
+    default: null,
   },
 });
 
